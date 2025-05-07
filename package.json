@@ -8,7 +8,9 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "date",
     "time",
@@ -33,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Mfuon2/chrono-utilz.git"
+    "url": "git+https://github.com/Mfuon2/chrono-utilz.git"
   },
   "bugs": {
     "url": "https://github.com/Mfuon2/chrono-utilz/issues"
