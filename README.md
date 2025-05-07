@@ -110,15 +110,15 @@ DateWise supports all modern browsers (Chrome, Firefox, Safari, Edge) and IE11 w
 
 ## Comparison with other libraries
 
-| Feature | DateWise | Moment.js | date-fns | Luxon |
-|---------|----------|-----------|----------|-------|
-| Bundle size | ~3KB | ~69KB | ~13KB | ~17KB |
-| Dependencies | None | None | None | None |
-| Immutable | ✅ | ❌ | ✅ | ✅ |
-| Tree-shaking | ✅ | ❌ | ✅ | ✅ |
-| TypeScript | ✅ | ⚠️ | ✅ | ✅ |
-| Timezone support | ✅ | ⚠️ | ❌ | ✅ |
-| Modern focus | ✅ | ❌ | ✅ | ✅ |
+| Feature | DateWise | 
+|---------|----------|
+| Bundle size | ~3KB |
+| Dependencies | None |
+| Immutable | ✅ |
+| Tree-shaking | ✅ |
+| TypeScript | ✅ |
+| Timezone support | ✅ |
+| Modern focus | ✅ |
 
 ## Contributing
 
