@@ -918,6 +918,332 @@ export function validateDateFormat(dateStr: string, format: DateFormat): boolean
 }
 
 /**
+ * Options for date range generation
+ */
+export interface DateRangeOptions {
+    /** The start date of the range */
+    start: Date | string;
+    /** The end date of the range */
+    end: Date | string;
+    /** The increment unit (default: 'day') */
+    unit?: TimeUnit;
+    /** The increment value (default: 1) */
+    step?: number;
+    /** Whether to include the end date (default: true) */
+    inclusive?: boolean;
+}
+
+/**
+ * Generates an array of dates between a start and end date
+ *
+ * @example
+ * ```
+ * // Generate dates for each day in May 2025
+ * const datesInMay = ChronoUtilzHelper.generateDateRange({
+ *   start: '2025-05-01',
+ *   end: '2025-05-31'
+ * });
+ * ```
+ *
+ * @param options - Configuration options for the date range
+ * @returns An array of Date objects
+ */
+export function generateDateRange(options: DateRangeOptions): Date[] {
+    const {
+        start,
+        end,
+        unit = 'day',
+        step = 1,
+        inclusive = true
+    } = options;
+
+    const startDate = ChronoUtilz.parseDate(start);
+    const endDate = ChronoUtilz.parseDate(end);
+
+    if (!startDate || !endDate) {
+        throw new Error('Invalid start or end date provided');
+    }
+
+    if (startDate > endDate) {
+        throw new Error('Start date must be before or equal to end date');
+    }
+
+    const dates: Date[] = [];
+    let currentDate = new Date(startDate);
+
+    while (
+        currentDate < endDate ||
+        (inclusive && currentDate.getTime() === endDate.getTime())
+        ) {
+        dates.push(new Date(currentDate));
+        currentDate = ChronoUtilz.addTime(currentDate, step, unit);
+    }
+
+    return dates;
+}
+
+/**
+ * Gets a human-readable duration string from milliseconds
+ *
+ * @example
+ * ```
+ * // "2 days, 4 hours, 30 minutes"
+ * const duration = ChronoUtilzHelper.formatDuration(189000000);
+ * ```
+ *
+ * @param milliseconds - The duration in milliseconds
+ * @param options - Formatting options
+ * @returns A formatted duration string
+ */
+export function formatDuration(
+    milliseconds: number,
+    options: { longFormat?: boolean, maxUnits?: number } = {}
+): string {
+    const { longFormat = true, maxUnits = 3 } = options;
+
+    if (milliseconds === 0) {
+        return longFormat ? '0 milliseconds' : '0ms';
+    }
+
+    const units: [string, string, number][] = [
+        ['year', 'y', 31536000000],
+        ['month', 'mo', 2592000000],
+        ['day', 'd', 86400000],
+        ['hour', 'h', 3600000],
+        ['minute', 'm', 60000],
+        ['second', 's', 1000],
+        ['millisecond', 'ms', 1]
+    ];
+
+    const parts: string[] = [];
+    let remaining = Math.abs(milliseconds);
+
+    for (const [longName, shortName, value] of units) {
+        if (parts.length >= maxUnits) break;
+
+        const count = Math.floor(remaining / value);
+        remaining %= value;
+
+        if (count === 0) continue;
+
+        if (longFormat) {
+            parts.push(`${count} ${longName}${count !== 1 ? 's' : ''}`);
+        } else {
+            parts.push(`${count}${shortName}`);
+        }
+    }
+
+    return parts.join(longFormat ? ', ' : ' ');
+}
+
+/**
+ * Returns the quarter number (1-4) for a given date
+ *
+ * @example
+ * ```
+ * const quarter = ChronoUtilzHelper.getQuarter(new Date(2025, 4, 15)); // 2 (Q2)
+ * ```
+ *
+ * @param date - The date to get the quarter for
+ * @returns The quarter number (1-4)
+ */
+export function getQuarter(date: Date | string): number {
+    const parsedDate = ChronoUtilz.parseDate(date);
+    if (!parsedDate) {
+        throw new Error('Invalid date provided');
+    }
+
+    const month = parsedDate.getMonth();
+    return Math.floor(month / 3) + 1;
+}
+
+/**
+ * Returns the first or last date of a quarter
+ *
+ * @example
+ * ```
+ * // Get the first day of the current quarter
+ * const startOfQuarter = ChronoUtilzHelper.getQuarterDate(new Date(), 'start');
+ *
+ * // Get the last day of Q3 2025
+ * const endOfQ3 = ChronoUtilzHelper.getQuarterDate(new Date(2025, 8, 15), 'end');
+ * ```
+ *
+ * @param date - The reference date
+ * @param type - Either 'start' or 'end' of the quarter
+ * @returns Date object representing the start or end of the quarter
+ */
+export function getQuarterDate(
+    date: Date | string,
+    type: 'start' | 'end'
+): Date {
+    const parsedDate = ChronoUtilz.parseDate(date);
+    if (!parsedDate) {
+        throw new Error('Invalid date provided');
+    }
+
+    const quarter = getQuarter(parsedDate);
+    const year = parsedDate.getFullYear();
+
+    if (type === 'start') {
+        // First day of the quarter (months are 0-indexed)
+        return new Date(year, (quarter - 1) * 3, 1);
+    } else {
+        // Last day of the quarter
+        return new Date(year, quarter * 3, 0);
+    }
+}
+
+
+/**
+ * Calculates business days between two dates (excluding weekends and optionally holidays)
+ *
+ * @example
+ * ```
+ * // Calculate business days between two dates
+ * const workDays = ChronoUtilzHelper.getBusinessDays(
+ *   '2025-05-01',
+ *   '2025-05-15',
+ *   ['2025-05-05'] // Optional holidays to exclude
+ * );
+ * ```
+ *
+ * @param startDate - Start date
+ * @param endDate - End date
+ * @param holidays - Optional array of holiday dates to exclude
+ * @returns Number of business days between dates
+ */
+export function getBusinessDays(
+    startDate: Date | string,
+    endDate: Date | string,
+    holidays: (Date | string)[] = []
+): number {
+    const start = ChronoUtilz.parseDate(startDate);
+    const end = ChronoUtilz.parseDate(endDate);
+
+    if (!start || !end) {
+        throw new Error('Invalid start or end date');
+    }
+
+    // Convert holidays to timestamp set for O(1) lookup
+    const holidaySet = new Set(
+        holidays
+            .map(h => {
+                const date = ChronoUtilz.parseDate(h);
+                return date ? ChronoUtilz.formatDate(date, 'YYYY-MM-DD') : null;
+            })
+            .filter((date): date is string => date !== null)
+    );
+
+    let count = 0;
+    const dayMilliseconds = 24 * 60 * 60 * 1000;
+
+    // Loop through each day
+    for (
+        let current = ChronoUtilz.startOf(start, 'day');
+        current <= end;
+        current = new Date(current.getTime() + dayMilliseconds)
+    ) {
+        // Skip weekends (0 = Sunday, 6 = Saturday)
+        const day = current.getDay();
+        if (day === 0 || day === 6) {
+            continue;
+        }
+
+        // Skip holidays
+        const dateStr = ChronoUtilz.formatDate(current, 'YYYY-MM-DD');
+        if (holidaySet.has(dateStr)) {
+            continue;
+        }
+
+        count++;
+    }
+
+    return count;
+}
+
+/**
+ * Age calculator that handles leap years and different formats
+ *
+ * @example
+ * ```
+ * // Calculate age in years
+ * const age = ChronoUtilzHelper.calculateAge('1990-05-15');  // 35 (in 2025)
+ *
+ * // Calculate age in multiple units
+ * const detailedAge = ChronoUtilzHelper.calculateAge('1990-05-15', {
+ *   units: ['year', 'month', 'day']
+ * });  // { years: 35, months: 0, days: 23 } (if today is May 7, 2025)
+ * ```
+ *
+ * @param birthDate - The birth date
+ * @param options - Calculation options
+ * @returns Age in years or detailed object with multiple units
+ */
+export function calculateAge(
+    birthDate: Date | string,
+    options: {
+        referenceDate?: Date | string;
+        units?: ('year' | 'month' | 'day')[];
+    } = {}
+): number | { years: number; months: number; days: number } {
+    const birth = ChronoUtilz.parseDate(birthDate);
+    if (!birth) {
+        throw new Error('Invalid birth date');
+    }
+
+    const reference = options.referenceDate
+        ? ChronoUtilz.parseDate(options.referenceDate)
+        : new Date();
+
+    if (!reference) {
+        throw new Error('Invalid reference date');
+    }
+
+    if (birth > reference) {
+        throw new Error('Birth date cannot be in the future');
+    }
+
+    // Simple case: just years
+    if (!options.units || options.units.length === 0 ||
+        (options.units.length === 1 && options.units[0] === 'year')) {
+        let age = reference.getFullYear() - birth.getFullYear();
+
+        // Adjust if birthday hasn't occurred yet this year
+        if (
+            reference.getMonth() < birth.getMonth() ||
+            (reference.getMonth() === birth.getMonth() &&
+                reference.getDate() < birth.getDate())
+        ) {
+            age--;
+        }
+
+        return age;
+    }
+
+    // Detailed calculation with years, months, days
+    let years = reference.getFullYear() - birth.getFullYear();
+    let months = reference.getMonth() - birth.getMonth();
+    let days = reference.getDate() - birth.getDate();
+
+    // Adjust days
+    if (days < 0) {
+        months--;
+        // Days in the previous month
+        const prevMonth = new Date(reference.getFullYear(), reference.getMonth(), 0);
+        days += prevMonth.getDate();
+    }
+
+    // Adjust months
+    if (months < 0) {
+        years--;
+        months += 12;
+    }
+
+    return { years, months, days };
+}
+
+/**
  * ChronoUtilz namespace - contains all ChronoUtilz exports for easy access
  */
 export const ChronoUtilz = {
