@@ -1267,7 +1267,12 @@ export const ChronoUtilz = {
     utcNow,
     toUTC,
     getTimezoneString,
-    validateDateFormat
+    validateDateFormat,
+    generateDateRange,
+    formatDuration,
+    getQuarter,
+    getBusinessDays,
+    calculateAge
 };
 
 export default ChronoUtilz;

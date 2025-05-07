@@ -22,7 +22,7 @@ import {
     utcNow,
     toUTC,
     getTimezoneString,
-    validateDateFormat, ChronoUtilzError
+    validateDateFormat, ChronoUtilzError, ChronoUtilz
 } from '../src';
 
 describe('ChronoUtilz', () => {
@@ -146,7 +146,8 @@ describe('ChronoUtilz', () => {
 
         it('should throw for unsupported formats', () => {
             const date = new Date('2025-05-07');
-            // @ts-ignore - Testing runtime behavior with invalid input
+            // @ts-ignore
+            // - Testing runtime behavior with invalid input
             expect(() => formatDate(date, 'INVALID')).to.throw();
         });
     });
@@ -606,4 +607,87 @@ describe('ChronoUtilz', () => {
             expect(validateDateFormat('14:30 PM', 'hh:mm A')).to.be.false; // 14 is not valid in 12-hour format
         });
     });
+
+
+    describe('generateDateRange', () => {
+        it('should generate a daily inclusive date range', () => {
+            const range = ChronoUtilz.generateDateRange({
+                start: '2025-05-01',
+                end: '2025-05-03',
+                unit: 'day',
+                step: 1,
+            });
+
+            expect(range).to.have.lengthOf(3);
+            expect(range[0].toISOString()).to.include('2025-05-01');
+            expect(range[2].toISOString()).to.include('2025-05-03');
+        });
+
+        it('should throw for invalid range', () => {
+            expect(() =>
+                ChronoUtilz.generateDateRange({
+                    start: '2025-05-10',
+                    end: '2025-05-01',
+                })
+            ).to.throw('Start date must be before or equal to end date');
+        });
+    });
+    describe('formatDuration', () => {
+        it('should format duration in long format by default', () => {
+            const formatted = ChronoUtilz.formatDuration(90061000); // 1d 1h 1m 1s
+            expect(formatted).to.include('day');
+            expect(formatted).to.include('hour');
+            expect(formatted).to.include('minute');
+        });
+
+        it('should format duration in short format', () => {
+            const formatted = ChronoUtilz.formatDuration(90061000, {
+                longFormat: false,
+            });
+            expect(formatted).to.match(/[0-9]+d.*[0-9]+h.*[0-9]+m/);
+        });
+
+        it('should handle 0 ms', () => {
+            const formatted = ChronoUtilz.formatDuration(0);
+            expect(formatted).to.equal('0 milliseconds');
+        });
+    });
+
+    describe('getQuarter', () => {
+        it('should return correct quarter', () => {
+            const q = ChronoUtilz.getQuarter('2025-04-10');
+            expect(q).to.equal(2);
+        });
+
+        it('should throw on invalid date', () => {
+            expect(() => ChronoUtilz.getQuarter('not-a-date')).to.throw();
+        });
+    });
+
+
+    describe('getBusinessDays', () => {
+        it('should count weekdays excluding weekends and holidays', () => {
+            const holidays = ['2025-05-05']; // Monday
+            const count = ChronoUtilz.getBusinessDays('2025-05-01', '2025-05-07', holidays);
+            expect(count).to.equal(4); // Excludes Sat, Sun, and holiday
+        });
+    });
+
+    describe('calculateAge', () => {
+        it('should return age in years', () => {
+            const age = ChronoUtilz.calculateAge('2000-05-01', {
+                referenceDate: '2025-05-07',
+            });
+            expect(age).to.equal(25);
+        });
+
+        it('should return detailed age in years, months, and days', () => {
+            const age = ChronoUtilz.calculateAge('1990-06-15', {
+                referenceDate: '2025-05-07',
+                units: ['year', 'month', 'day'],
+            });
+            expect(age).to.have.all.keys('years', 'months', 'days');
+        });
+    });
+    
 });
