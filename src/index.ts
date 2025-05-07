@@ -1,9 +1,9 @@
 
 /**
- * DateWise - A lightweight date utility library
+ * ChronoUtilz - A lightweight date utility library
  * Provides common date operations with focus on performance and bundle size
  * Compatible with TypeScript, JavaScript and Node.js
- * @module DateWise
+ * @module ChronoUtilz
  */
 
 /**
@@ -25,7 +25,7 @@ export type DateFormat =
 export type TimeUnit = 'millisecond' | 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year';
 
 /**
- * DateWise options for parsing dates
+ * ChronoUtilz options for parsing dates
  */
 export interface DateParseOptions {
     /**
@@ -39,16 +39,16 @@ export interface DateParseOptions {
 }
 
 /**
- * DateWise error class
+ * ChronoUtilz error class
  */
-export class DateWiseError extends Error {
+export class ChronoUtilzError extends Error {
     constructor(message: string) {
-        super(`DateWise Error: ${message}`);
-        this.name = 'DateWiseError';
+        super(`ChronoUtilz Error: ${message}`);
+        this.name = 'ChronoUtilzError';
 
         // Support proper stack traces in modern environments
         if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, DateWiseError);
+            Error.captureStackTrace(this, ChronoUtilzError);
         }
     }
 }
@@ -58,7 +58,7 @@ export class DateWiseError extends Error {
  * @param input - The input to parse as a date
  * @param options - Parsing options
  * @returns A Date object or null if invalid and throwError is false
- * @throws {DateWiseError} If the date is invalid and throwError is true
+ * @throws {ChronoUtilzError} If the date is invalid and throwError is true
  */
 export function parseDate(input: string | number | Date, options: DateParseOptions = {}): Date | null {
     const { throwError = false, fallback = null } = options;
@@ -66,18 +66,18 @@ export function parseDate(input: string | number | Date, options: DateParseOptio
     try {
         if (input instanceof Date) {
             const date = new Date(input.getTime());
-            if (isNaN(date.getTime())) throw new DateWiseError('Invalid Date object');
+            if (isNaN(date.getTime())) throw new ChronoUtilzError('Invalid Date object');
             return date;
         }
 
         if (typeof input === 'number') {
             const date = new Date(input);
-            if (isNaN(date.getTime())) throw new DateWiseError(`Invalid timestamp: ${input}`);
+            if (isNaN(date.getTime())) throw new ChronoUtilzError(`Invalid timestamp: ${input}`);
             return date;
         }
 
         if (typeof input !== 'string') {
-            throw new DateWiseError('Invalid input type for date');
+            throw new ChronoUtilzError('Invalid input type for date');
         }
 
         const months = [
@@ -152,10 +152,10 @@ export function parseDate(input: string | number | Date, options: DateParseOptio
             }
         }
 
-        throw new DateWiseError(`Unable to parse date: ${input}`);
+        throw new ChronoUtilzError(`Unable to parse date: ${input}`);
     } catch (error) {
         if (throwError) {
-            throw error instanceof DateWiseError ? error : new DateWiseError(`Failed to parse date: ${input}`);
+            throw error instanceof ChronoUtilzError ? error : new ChronoUtilzError(`Failed to parse date: ${input}`);
         }
         return fallback;
     }
@@ -166,12 +166,12 @@ export function parseDate(input: string | number | Date, options: DateParseOptio
  * @param date - The date to format
  * @param format - The format pattern
  * @returns Formatted date string
- * @throws {DateWiseError} If the date is invalid
+ * @throws {ChronoUtilzError} If the date is invalid
  */
 export function formatDate(date: Date | string | number, format: DateFormat = 'YYYY-MM-DD'): string {
     const safeDate = parseDate(date, { throwError: true });
     if (!safeDate) {
-        throw new DateWiseError('Invalid date provided to formatDate');
+        throw new ChronoUtilzError('Invalid date provided to formatDate');
     }
 
     const year = safeDate.getFullYear();
@@ -206,7 +206,7 @@ export function formatDate(date: Date | string | number, format: DateFormat = 'Y
         case 'hh:mm A':
             return `${pad(hours12)}:${pad(minutes)} ${ampm}`;
         default:
-            throw new DateWiseError(`Unsupported date format: ${format}`);
+            throw new ChronoUtilzError(`Unsupported date format: ${format}`);
     }
 }
 
@@ -224,7 +224,7 @@ export function addTime(
 ): Date {
     const safeDate = parseDate(date, { throwError: true });
     if (!safeDate) {
-        throw new DateWiseError('Invalid date provided to addTime');
+        throw new ChronoUtilzError('Invalid date provided to addTime');
     }
 
     const result = new Date(safeDate.getTime());
@@ -255,7 +255,7 @@ export function addTime(
             result.setFullYear(result.getFullYear() + amount);
             break;
         default:
-            throw new DateWiseError(`Invalid time unit: ${unit}`);
+            throw new ChronoUtilzError(`Invalid time unit: ${unit}`);
     }
 
     return result;
@@ -292,7 +292,7 @@ export function getDateDiff(
     const safeDate2 = parseDate(date2, { throwError: true });
 
     if (!safeDate1 || !safeDate2) {
-        throw new DateWiseError('Invalid date(s) provided to getDateDiff');
+        throw new ChronoUtilzError('Invalid date(s) provided to getDateDiff');
     }
 
     const diffMs = safeDate1.getTime() - safeDate2.getTime();
@@ -326,7 +326,7 @@ export function getDateDiff(
             return d1Year - d2Year + monthAdjustment;
         }
         default:
-            throw new DateWiseError(`Invalid time unit: ${unit}`);
+            throw new ChronoUtilzError(`Invalid time unit: ${unit}`);
     }
 }
 
@@ -349,7 +349,7 @@ export function isBetweenDates(
     const safeEndDate = parseDate(endDate, { throwError: true });
 
     if (!safeDate || !safeStartDate || !safeEndDate) {
-        throw new DateWiseError('Invalid date(s) provided to isBetweenDates');
+        throw new ChronoUtilzError('Invalid date(s) provided to isBetweenDates');
     }
 
     const dateTime = safeDate.getTime();
@@ -386,7 +386,7 @@ export function startOf(
 ): Date {
     const safeDate = parseDate(date, { throwError: true });
     if (!safeDate) {
-        throw new DateWiseError('Invalid date provided to startOf');
+        throw new ChronoUtilzError('Invalid date provided to startOf');
     }
 
     const result = new Date(safeDate.getTime());
@@ -415,7 +415,7 @@ export function startOf(
             result.setHours(0, 0, 0, 0);
             break;
         default:
-            throw new DateWiseError(`Invalid time unit for startOf: ${unit}`);
+            throw new ChronoUtilzError(`Invalid time unit for startOf: ${unit}`);
     }
 
     return result;
@@ -433,7 +433,7 @@ export function endOf(
 ): Date {
     const safeDate = parseDate(date, { throwError: true });
     if (!safeDate) {
-        throw new DateWiseError('Invalid date provided to endOf');
+        throw new ChronoUtilzError('Invalid date provided to endOf');
     }
 
     const result = new Date(safeDate.getTime());
@@ -464,7 +464,7 @@ export function endOf(
             result.setHours(23, 59, 59, 999);
             break;
         default:
-            throw new DateWiseError(`Invalid time unit for endOf: ${unit}`);
+            throw new ChronoUtilzError(`Invalid time unit for endOf: ${unit}`);
     }
 
     return result;
@@ -478,7 +478,7 @@ export function endOf(
 export function getDayOfYear(date: Date | string | number): number {
     const safeDate = parseDate(date, { throwError: true });
     if (!safeDate) {
-        throw new DateWiseError('Invalid date provided to getDayOfYear');
+        throw new ChronoUtilzError('Invalid date provided to getDayOfYear');
     }
 
     const startOfYear = new Date(safeDate.getFullYear(), 0, 0);
@@ -495,7 +495,7 @@ export function getDayOfYear(date: Date | string | number): number {
 export function getWeekOfYear(date: Date | string | number): number {
     const safeDate = parseDate(date, { throwError: true });
     if (!safeDate) {
-        throw new DateWiseError('Invalid date provided to getWeekOfYear');
+        throw new ChronoUtilzError('Invalid date provided to getWeekOfYear');
     }
 
     // Set to nearest Thursday: current date + 4 - current day number
@@ -529,7 +529,7 @@ export function isLeapYear(year: number | Date | string): boolean {
     } else {
         const safeDate = parseDate(year, { throwError: true });
         if (!safeDate) {
-            throw new DateWiseError('Invalid date provided to isLeapYear');
+            throw new ChronoUtilzError('Invalid date provided to isLeapYear');
         }
         yearToCheck = safeDate.getFullYear();
     }
@@ -545,7 +545,7 @@ export function isLeapYear(year: number | Date | string): boolean {
 export function getDaysInMonth(date: Date | string | number): number {
     const safeDate = parseDate(date, { throwError: true });
     if (!safeDate) {
-        throw new DateWiseError('Invalid date provided to getDaysInMonth');
+        throw new ChronoUtilzError('Invalid date provided to getDaysInMonth');
     }
 
     return new Date(safeDate.getFullYear(), safeDate.getMonth() + 1, 0).getDate();
@@ -565,7 +565,7 @@ export function getRelativeTime(
     const safeBaseDate = parseDate(baseDate, { throwError: true });
 
     if (!safeDate || !safeBaseDate) {
-        throw new DateWiseError('Invalid date(s) provided to getRelativeTime');
+        throw new ChronoUtilzError('Invalid date(s) provided to getRelativeTime');
     }
 
     const deltaMs = safeDate.getTime() - safeBaseDate.getTime();
@@ -591,8 +591,8 @@ export function getRelativeTime(
     const from = new Date(safeBaseDate.getFullYear(), safeBaseDate.getMonth(), safeBaseDate.getDate());
     const to = new Date(safeDate.getFullYear(), safeDate.getMonth(), safeDate.getDate());
 
-    let years = to.getFullYear() - from.getFullYear();
-    let months = to.getMonth() - from.getMonth();
+    const years = to.getFullYear() - from.getFullYear();
+    const months = to.getMonth() - from.getMonth();
     let totalMonths = years * 12 + months;
 
     // Adjust if the day of the month isn't reached yet
@@ -615,7 +615,7 @@ export function getRelativeTime(
 export function getTimezoneOffset(date: Date | string | number = new Date()): number {
     const safeDate = parseDate(date, { throwError: true });
     if (!safeDate) {
-        throw new DateWiseError('Invalid date provided to getTimezoneOffset');
+        throw new ChronoUtilzError('Invalid date provided to getTimezoneOffset');
     }
 
     return safeDate.getTimezoneOffset();
@@ -643,19 +643,19 @@ export function createDate(
 ): Date {
     // Validate inputs
     if (month < 0 || month > 11) {
-        throw new DateWiseError(`Month must be between 0 and 11, got ${month}`);
+        throw new ChronoUtilzError(`Month must be between 0 and 11, got ${month}`);
     }
 
     const date = new Date(year, month, day, hours, minutes, seconds, milliseconds);
 
     // Check if the date is valid
     if (isNaN(date.getTime())) {
-        throw new DateWiseError('Invalid date components provided to createDate');
+        throw new ChronoUtilzError('Invalid date components provided to createDate');
     }
 
     // Verify that the day didn't roll over (e.g., April 31 -> May 1)
     if (date.getMonth() !== month) {
-        throw new DateWiseError(`Invalid day ${day} for month ${month}`);
+        throw new ChronoUtilzError(`Invalid day ${day} for month ${month}`);
     }
 
     return date;
@@ -708,7 +708,7 @@ export class CalendarDate {
     static fromString(input: string | number): CalendarDate {
         const date = parseDate(input, { throwError: true });
         if (!date) {
-            throw new DateWiseError('Invalid date provided to CalendarDate.fromString');
+            throw new ChronoUtilzError('Invalid date provided to CalendarDate.fromString');
         }
         return CalendarDate.fromDate(date);
     }
@@ -828,7 +828,7 @@ export function utcNow(): Date {
 export function toUTC(date: Date | string | number): Date {
     const safeDate = parseDate(date, { throwError: true });
     if (!safeDate) {
-        throw new DateWiseError('Invalid date provided to toUTC');
+        throw new ChronoUtilzError('Invalid date provided to toUTC');
     }
 
     return new Date(
@@ -865,18 +865,20 @@ export function validateDateFormat(dateStr: string, format: DateFormat): boolean
             match = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
             if (!match) return false;
             break;
-        case 'MM/DD/YYYY':
+        case 'MM/DD/YYYY':{
             match = dateStr.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
             if (!match) return false;
             const [ , mm1, dd1, yyyy1 ] = match.map(Number);
             if (mm1 < 1 || mm1 > 12 || dd1 < 1 || dd1 > 31) return false;
             return new Date(`${yyyy1}-${String(mm1).padStart(2, '0')}-${String(dd1).padStart(2, '0')}`).getMonth() === mm1 - 1;
-        case 'DD/MM/YYYY':
+        }
+        case 'DD/MM/YYYY': {
             match = dateStr.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
             if (!match) return false;
-            const [ , dd2, mm2, yyyy2 ] = match.map(Number);
+            const [, dd2, mm2, yyyy2] = match.map(Number);
             if (mm2 < 1 || mm2 > 12 || dd2 < 1 || dd2 > 31) return false;
             return new Date(`${yyyy2}-${String(mm2).padStart(2, '0')}-${String(dd2).padStart(2, '0')}`).getDate() === dd2;
+        }
         case 'YYYY-MM-DD HH:mm:ss':
             match = dateStr.match(/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/);
             if (!match) return false;
@@ -889,17 +891,19 @@ export function validateDateFormat(dateStr: string, format: DateFormat): boolean
             match = dateStr.match(/^([A-Za-z]{3}) (\d{1,2}), (\d{4})$/);
             if (!match) return false;
             break;
-        case 'HH:mm:ss':
+        case 'HH:mm:ss': {
             match = dateStr.match(/^(\d{2}):(\d{2}):(\d{2})$/);
             if (!match) return false;
-            const [ , h1, m1, s1 ] = match.map(Number);
+            const [, h1, m1, s1] = match.map(Number);
             return h1 < 24 && m1 < 60 && s1 < 60;
-        case 'hh:mm A':
+        }
+        case 'hh:mm A': {
             match = dateStr.match(/^(\d{1,2}):(\d{2}) ([AP]M)$/);
             if (!match) return false;
             const hour = parseInt(match[1], 10);
             const minute = parseInt(match[2], 10);
             return hour >= 1 && hour <= 12 && minute >= 0 && minute <= 59;
+        }
         default:
             return false;
     }
@@ -914,9 +918,9 @@ export function validateDateFormat(dateStr: string, format: DateFormat): boolean
 }
 
 /**
- * DateWise namespace - contains all DateWise exports for easy access
+ * ChronoUtilz namespace - contains all ChronoUtilz exports for easy access
  */
-export const DateWise = {
+export const ChronoUtilz = {
     parseDate,
     formatDate,
     addTime,
@@ -940,4 +944,4 @@ export const DateWise = {
     validateDateFormat
 };
 
-export default DateWise;
+export default ChronoUtilz;

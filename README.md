@@ -1,22 +1,22 @@
 
 <div align="center">
-<h1>📅 DateWise</h1>
+<h1>📅 ChronoUtilz</h1>
 
-**DateWise is a lightweight, high-performance date utility library for JavaScript and TypeScript. Designed with minimal bundle size and developer productivity in mind, it provides essential date operations without the bloat of full-featured date libraries.**
+**ChronoUtilz is a lightweight, high-performance date utility library for JavaScript and TypeScript. Designed with minimal bundle size and developer productivity in mind, it provides essential date operations without the bloat of full-featured date libraries.**
 
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/19bff778386b42779ffa07b61171420e)](https://app.codacy.com/gh/Fintector/date-wise?utm_source=github.com&utm_medium=referral&utm_content=Fintector/date-wise&utm_campaign=Badge_Grade)
-[![npm version](https://img.shields.io/npm/v/datewise.svg)](https://www.npmjs.com/package/datewise)
-[![Bundle Size](https://img.shields.io/bundlephobia/minzip/datewise)](https://bundlephobia.com/package/datewise)
-[![Downloads](https://img.shields.io/npm/dm/datewise.svg)](https://www.npmjs.com/package/datewise)
-[![License](https://img.shields.io/npm/l/datewise.svg)](https://github.com/Fintector/datewise/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/chrono-utilz.svg)](https://www.npmjs.com/package/chrono-utilz)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/chrono-utilz)](https://bundlephobia.com/package/chrono-utilz)
+[![Downloads](https://img.shields.io/npm/dm/chrono-utilz.svg)](https://www.npmjs.com/package/chrono-utilz)
+[![License](https://img.shields.io/npm/l/chrono-utilz.svg)](https://github.com/Fintector/chrono-utilz/blob/main/LICENSE)
 
 > 🌍 Designed for Node.js, modern browsers, and TypeScript-first projects.
 </div>
 
-## Why DateWise?
+## Why ChronoUtilz?
 
-Working with dates in JavaScript doesn't have to be complicated. DateWise provides a comprehensive set of utilities to make date manipulation simple, reliable, and lightweight.
+Working with dates in JavaScript doesn't have to be complicated. ChronoUtilz provides a comprehensive set of utilities to make date manipulation simple, reliable, and lightweight.
 
 - **🪶 Lightweight** - Only ~3KB gzipped, no dependencies
 - **⚡ Fast** - Optimized for performance
@@ -28,39 +28,39 @@ Working with dates in JavaScript doesn't have to be complicated. DateWise provid
 
 ```bash
 # Using npm
-npm install datewise
+npm install chrono-utilz
 
 # Using yarn
-yarn add datewise
+yarn add chrono-utilz
 
 # Using pnpm
-pnpm add datewise
+pnpm add chrono-utilz
 ```
 
 ## Example Usage
 
 ```javascript
-import DateWise from 'datewise';
+import ChronoUtilz from 'chrono-utilz';
 
 // Parse a date string
-const date = DateWise.parseDate('2025-05-07');
+const date = ChronoUtilz.parseDate('2025-05-07');
 
 // Format a date
-const formatted = DateWise.formatDate(new Date(), 'DD MMM YYYY'); // "07 May 2025"
+const formatted = ChronoUtilz.formatDate(new Date(), 'DD MMM YYYY'); // "07 May 2025"
 
 // Add time to a date
-const nextWeek = DateWise.addTime(new Date(), 1, 'week');
+const nextWeek = ChronoUtilz.addTime(new Date(), 1, 'week');
 
 // Check if a date is valid
-if (DateWise.isValidDate('2025-02-30')) {
+if (ChronoUtilz.isValidDate('2025-02-30')) {
   console.log('Valid date');
 } else {
   console.log('Invalid date'); // This will run
 }
 
 // Get relative time
-const relativeTime = DateWise.getRelativeTime(
-  DateWise.subtractTime(new Date(), 2, 'day')
+const relativeTime = ChronoUtilz.getRelativeTime(
+  ChronoUtilz.subtractTime(new Date(), 2, 'day')
 ); // "2 days ago"
 ```
 
@@ -89,7 +89,7 @@ const relativeTime = DateWise.getRelativeTime(
 
 ```javascript
 // Create a CalendarDate instance (timezone-independent)
-const birthday = new DateWise.CalendarDate(2000, 0, 1); // January 1, 2000
+const birthday = new ChronoUtilz.CalendarDate(2000, 0, 1); // January 1, 2000
 console.log(birthday.format('DD MMM YYYY')); // "01 Jan 2000"
 ```
 
@@ -108,11 +108,11 @@ type DateFormat =
 
 ## Browser Support
 
-DateWise supports all modern browsers (Chrome, Firefox, Safari, Edge) and IE11 with appropriate polyfills.
+ChronoUtilz supports all modern browsers (Chrome, Firefox, Safari, Edge) and IE11 with appropriate polyfills.
 
 ## Comparison with other libraries
 
-| Feature | DateWise | 
+| Feature | ChronoUtilz | 
 |---------|----------|
 | Bundle size | ~3KB |
 | Dependencies | None |

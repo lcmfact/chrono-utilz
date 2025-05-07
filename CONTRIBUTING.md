@@ -1,6 +1,6 @@
-# Contributing to DateWise
+# Contributing to ChronoUtilz
 
-First of all, thank you for considering contributing to DateWise! Your help is essential for making it the best date utility library for JavaScript and TypeScript developers.
+First of all, thank you for considering contributing to ChronoUtilz! Your help is essential for making it the best date utility library for JavaScript and TypeScript developers.
 
 This document provides guidelines and steps for contributing to the project. Following these guidelines helps to communicate that you respect the time of the developers managing and developing this open source project.
 
@@ -21,7 +21,7 @@ This document provides guidelines and steps for contributing to the project. Fol
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the DateWise Code of Conduct. By participating, you are expected to uphold this code. Please report unacceptable behavior to [us](mail-to:mfuoon@gmail.com).
+This project and everyone participating in it is governed by the ChronoUtilz Code of Conduct. By participating, you are expected to uphold this code. Please report unacceptable behavior to [us](mail-to:mfuoon@gmail.com).
 
 ## How Can I Contribute?
 
@@ -43,28 +43,28 @@ Enhancement suggestions are also tracked as GitHub issues. When creating a featu
 
 - Use a clear and descriptive title for the issue
 - Provide a detailed description of the suggested enhancement
-- Explain why this enhancement would be useful to most DateWise users
+- Explain why this enhancement would be useful to most ChronoUtilz users
 - List some other date libraries or applications where this enhancement exists, if applicable
-- Specify which version of DateWise you're using
+- Specify which version of ChronoUtilz you're using
 
 ### Code Contributions
 
 #### Your First Code Contribution
 
-Unsure where to begin contributing to DateWise? You can start by looking through these `beginner-friendly` and `help-wanted` issues:
+Unsure where to begin contributing to ChronoUtilz? You can start by looking through these `beginner-friendly` and `help-wanted` issues:
 
 - **Beginner friendly issues** - issues which should only require a few lines of code, and a test or two.
 - **Help wanted issues** - issues which should be a bit more involved than beginner issues.
 
 #### Local Development
 
-Here's how to set up DateWise for local development:
+Here's how to set up ChronoUtilz for local development:
 
-1. Fork the DateWise repo on GitHub
+1. Fork the ChronoUtilz repo on GitHub
 2. Clone your fork locally:
    ```bash
-   git clone https://github.com/your-username/datewise.git
-   cd datewise
+   git clone https://github.com/your-username/chrono-utilz.git
+   cd chrono-utilz
    ```
 3. Create a branch for local development:
    ```bash
@@ -140,4 +140,4 @@ Regular contributors may be invited to join as maintainers. Maintainers are expe
 - Contribute code regularly
 - Participate in planning and roadmap discussions
 
-Thank you for contributing to DateWise!
+Thank you for contributing to ChronoUtilz!

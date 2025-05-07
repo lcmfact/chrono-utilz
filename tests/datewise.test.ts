@@ -22,10 +22,10 @@ import {
     utcNow,
     toUTC,
     getTimezoneString,
-    validateDateFormat, DateWiseError
+    validateDateFormat, ChronoUtilzError
 } from '../src';
 
-describe('DateWise', () => {
+describe('ChronoUtilz', () => {
     let clock: sinon.SinonFakeTimers;
 
     beforeEach(() => {
@@ -58,7 +58,7 @@ describe('DateWise', () => {
         });
 
         it('should throw an error for invalid date string', () => {
-            expect(() => getTimezoneOffset('invalid-date')).to.throw(DateWiseError, 'DateWise Error: Unable to parse date: invalid-date');
+            expect(() => getTimezoneOffset('invalid-date')).to.throw(ChronoUtilzError, 'ChronoUtilz Error: Unable to parse date: invalid-date');
         });
     });
 
@@ -383,7 +383,7 @@ describe('DateWise', () => {
         });
 
         it('should throw if invalid date is provided', () => {
-            expect(() => toUTC('not-a-date')).to.throw(DateWiseError, "DateWise Error: Unable to parse date: not-a-date");
+            expect(() => toUTC('not-a-date')).to.throw(ChronoUtilzError, "ChronoUtilz Error: Unable to parse date: not-a-date");
         });
     });
 
@@ -456,19 +456,19 @@ describe('DateWise', () => {
             expect(date.getMilliseconds()).to.equal(500);
         });
         it('should throw if month is less than 0', () => {
-            expect(() => createDate(2025, -1, 10)).to.throw(DateWiseError, /Month must be between 0 and 11/);
+            expect(() => createDate(2025, -1, 10)).to.throw(ChronoUtilzError, /Month must be between 0 and 11/);
         });
 
         it('should throw if month is greater than 11', () => {
-            expect(() => createDate(2025, 12, 10)).to.throw(DateWiseError, /Month must be between 0 and 11/);
+            expect(() => createDate(2025, 12, 10)).to.throw(ChronoUtilzError, /Month must be between 0 and 11/);
         });
 
         it('should throw if date is invalid (e.g., April 31)', () => {
-            expect(() => createDate(2025, 3, 31)).to.throw(DateWiseError, /Invalid day 31 for month 3/);
+            expect(() => createDate(2025, 3, 31)).to.throw(ChronoUtilzError, /Invalid day 31 for month 3/);
         });
 
         it('should throw if components result in an invalid date (e.g., Feb 30)', () => {
-            expect(() => createDate(2025, 1, 30)).to.throw(DateWiseError, /Invalid day 30 for month 1/);
+            expect(() => createDate(2025, 1, 30)).to.throw(ChronoUtilzError, /Invalid day 30 for month 1/);
         });
 
         it('should allow Feb 29 on a leap year', () => {
