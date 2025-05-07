@@ -11,3 +11,4 @@ yarn-error.log*
 .vscode/*
 .nyc_output/processinfo/00722e58-3670-4c47-b60a-325881ea5e8e.json
 /.nyc_output
+.idea/workspace.xml
