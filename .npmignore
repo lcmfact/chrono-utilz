@@ -1,0 +1,6 @@
+/src
+/tests
+*.log
+.idea
+.github
+*.config.js
