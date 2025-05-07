@@ -1,5 +1,5 @@
 {
-  "name": "chrono-utilz",
+  "name": "@mfuon2/chrono-utilz",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
