@@ -1,5 +1,5 @@
 {
-  "name": "@mfuon2/chrono-utilz",
+  "name": "chrono-utilz",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
@@ -8,7 +8,9 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "date",
     "time",
