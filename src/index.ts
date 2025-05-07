@@ -591,8 +591,8 @@ export function getRelativeTime(
     const from = new Date(safeBaseDate.getFullYear(), safeBaseDate.getMonth(), safeBaseDate.getDate());
     const to = new Date(safeDate.getFullYear(), safeDate.getMonth(), safeDate.getDate());
 
-    let years = to.getFullYear() - from.getFullYear();
-    let months = to.getMonth() - from.getMonth();
+    const years = to.getFullYear() - from.getFullYear();
+    const months = to.getMonth() - from.getMonth();
     let totalMonths = years * 12 + months;
 
     // Adjust if the day of the month isn't reached yet
@@ -865,18 +865,20 @@ export function validateDateFormat(dateStr: string, format: DateFormat): boolean
             match = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
             if (!match) return false;
             break;
-        case 'MM/DD/YYYY':
+        case 'MM/DD/YYYY':{
             match = dateStr.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
             if (!match) return false;
             const [ , mm1, dd1, yyyy1 ] = match.map(Number);
             if (mm1 < 1 || mm1 > 12 || dd1 < 1 || dd1 > 31) return false;
             return new Date(`${yyyy1}-${String(mm1).padStart(2, '0')}-${String(dd1).padStart(2, '0')}`).getMonth() === mm1 - 1;
-        case 'DD/MM/YYYY':
+        }
+        case 'DD/MM/YYYY': {
             match = dateStr.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
             if (!match) return false;
-            const [ , dd2, mm2, yyyy2 ] = match.map(Number);
+            const [, dd2, mm2, yyyy2] = match.map(Number);
             if (mm2 < 1 || mm2 > 12 || dd2 < 1 || dd2 > 31) return false;
             return new Date(`${yyyy2}-${String(mm2).padStart(2, '0')}-${String(dd2).padStart(2, '0')}`).getDate() === dd2;
+        }
         case 'YYYY-MM-DD HH:mm:ss':
             match = dateStr.match(/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/);
             if (!match) return false;
@@ -889,17 +891,19 @@ export function validateDateFormat(dateStr: string, format: DateFormat): boolean
             match = dateStr.match(/^([A-Za-z]{3}) (\d{1,2}), (\d{4})$/);
             if (!match) return false;
             break;
-        case 'HH:mm:ss':
+        case 'HH:mm:ss': {
             match = dateStr.match(/^(\d{2}):(\d{2}):(\d{2})$/);
             if (!match) return false;
-            const [ , h1, m1, s1 ] = match.map(Number);
+            const [, h1, m1, s1] = match.map(Number);
             return h1 < 24 && m1 < 60 && s1 < 60;
-        case 'hh:mm A':
+        }
+        case 'hh:mm A': {
             match = dateStr.match(/^(\d{1,2}):(\d{2}) ([AP]M)$/);
             if (!match) return false;
             const hour = parseInt(match[1], 10);
             const minute = parseInt(match[2], 10);
             return hour >= 1 && hour <= 12 && minute >= 0 && minute <= 59;
+        }
         default:
             return false;
     }
