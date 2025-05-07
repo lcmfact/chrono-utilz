@@ -33,12 +33,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Fintector/datewise.git"
+    "url": "https://github.com/Mfuon2/chrono-utilz.git"
   },
   "bugs": {
-    "url": "https://github.com/Fintector/datewise/issues"
+    "url": "https://github.com/Mfuon2/chrono-utilz/issues"
   },
-  "homepage": "https://github.com/Fintector/datewise#readme",
+  "homepage": "https://github.com/Mfuon2/chrono-utilz#readme",
   "author": "Leonard Mfuon <mfuoon@gmail.com>",
   "license": "MIT",
   "devDependencies": {
