@@ -28,19 +28,19 @@ Working with dates in JavaScript doesn't have to be complicated. ChronoUtilz pro
 
 ```bash
 # Using npm
-npm install chrono-utilz
+npm install @mfuon2/chrono-utilz
 
 # Using yarn
-yarn add chrono-utilz
+yarn add @mfuon2/chrono-utilz
 
 # Using pnpm
-pnpm add chrono-utilz
+pnpm add @mfuon2/chrono-utilz
 ```
 
 ## Example Usage
 
 ```javascript
-import ChronoUtilz from 'chrono-utilz';
+import ChronoUtilz from '@mfuon2/chrono-utilz';
 
 // Parse a date string
 const date = ChronoUtilz.parseDate('2025-05-07');
