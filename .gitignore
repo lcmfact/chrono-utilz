@@ -1,0 +1,13 @@
+/tmp
+/out-tsc
+
+/node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/.pnp
+.pnp.js
+
+.vscode/*
+.nyc_output/processinfo/00722e58-3670-4c47-b60a-325881ea5e8e.json
+/.nyc_output
