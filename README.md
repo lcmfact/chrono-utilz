@@ -43,25 +43,83 @@ pnpm add @mfuon2/chrono-utilz
 import ChronoUtilz from '@mfuon2/chrono-utilz';
 
 // Parse a date string
-const date = ChronoUtilz.parseDate('2025-05-07');
+const parsed = ChronoUtilz.parseDate('2025-05-07');
 
 // Format a date
 const formatted = ChronoUtilz.formatDate(new Date(), 'DD MMM YYYY'); // "07 May 2025"
 
-// Add time to a date
-const nextWeek = ChronoUtilz.addTime(new Date(), 1, 'week');
+// Add time
+const nextMonth = ChronoUtilz.addTime(new Date(), 1, 'month');
 
-// Check if a date is valid
-if (ChronoUtilz.isValidDate('2025-02-30')) {
-  console.log('Valid date');
-} else {
-  console.log('Invalid date'); // This will run
-}
+// Subtract time
+const lastWeek = ChronoUtilz.subtractTime(new Date(), 1, 'week');
 
-// Get relative time
-const relativeTime = ChronoUtilz.getRelativeTime(
-  ChronoUtilz.subtractTime(new Date(), 2, 'day')
-); // "2 days ago"
+// Get difference between dates
+const diff = ChronoUtilz.getDateDiff('2025-05-08', '2025-05-01', 'day'); // 7
+
+// Check if a date is between two dates
+const isBetween = ChronoUtilz.isBetweenDates('2025-05-05', '2025-05-01', '2025-05-10'); // true
+
+// Validate date
+const valid = ChronoUtilz.isValidDate('2025-02-29'); // false
+
+// Start/end of a unit
+const start = ChronoUtilz.startOf(new Date(), 'month');
+const end = ChronoUtilz.endOf(new Date(), 'week');
+
+// Day of the year
+const dayOfYear = ChronoUtilz.getDayOfYear(new Date()); // e.g., 128
+
+// Week of the year
+const weekOfYear = ChronoUtilz.getWeekOfYear(new Date()); // e.g., 19
+
+// Leap year check
+const leap = ChronoUtilz.isLeapYear(2024); // true
+
+// Days in a month
+const daysInFeb = ChronoUtilz.getDaysInMonth(2024, 2); // 29
+
+// Relative time
+const relative = ChronoUtilz.getRelativeTime(ChronoUtilz.subtractTime(new Date(), 3, 'day')); // "3 days ago"
+
+// Timezone offset in minutes
+const offset = ChronoUtilz.getTimezoneOffset(); // e.g., -120
+
+// Create a date safely
+const customDate = ChronoUtilz.createDate(2025, 4, 7); // May 7, 2025
+
+// Access CalendarDate class
+const calDate = new ChronoUtilz.CalendarDate(2025, 5, 8);
+console.log(calDate.toISO()); // "2025-05-08"
+
+// Get current UTC time
+const nowUtc = ChronoUtilz.utcNow();
+
+// Convert to UTC
+const utc = ChronoUtilz.toUTC(new Date());
+
+// Get timezone string
+const tzString = ChronoUtilz.getTimezoneString(); // e.g., "UTC+2"
+
+// Validate a date format
+const isFormatValid = ChronoUtilz.validateDateFormat('2025-05-07', 'YYYY-MM-DD'); // true
+
+// Generate a date range array
+const range = ChronoUtilz.generateDateRange('2025-05-01', '2025-05-05');
+console.log(range); // ['2025-05-01', '2025-05-02', ..., '2025-05-05']
+
+// Format a duration
+const duration = ChronoUtilz.formatDuration(93784); // "1d 2h 3m 4s" (depending on format)
+
+// Get the quarter of a date
+const quarter = ChronoUtilz.getQuarter(new Date()); // 2 (for May)
+
+// Get business days between two dates
+const bizDays = ChronoUtilz.getBusinessDays('2025-05-01', '2025-05-10'); // excludes weekends
+
+// Calculate age
+const age = ChronoUtilz.calculateAge('1990-05-08'); // e.g., 35
+
 ```
 
 ## Features
