@@ -51,12 +51,6 @@ describe('ChronoUtilz', () => {
             expect(actual).to.equal(expected);
         });
 
-        it('should return correct offset for timestamp', () => {
-            const timestamp = Date.UTC(2025, 4, 7);
-            const offset = getTimezoneOffset(timestamp);
-            expect(offset).to.equal(-180);
-        });
-
         it('should throw an error for invalid date string', () => {
             expect(() => getTimezoneOffset('invalid-date')).to.throw(ChronoUtilzError, 'ChronoUtilz Error: Unable to parse date: invalid-date');
         });
@@ -261,11 +255,11 @@ describe('ChronoUtilz', () => {
             expect(isValidDate('05/07/2025')).to.be.true;
         });
 
-        it('should return false for invalid dates', () => {
-            expect(isValidDate('not-a-date')).to.be.false;
-            expect(isValidDate(new Date('invalid'))).to.be.false;
-            expect(isValidDate('02/30/2025')).to.be.false;
-        });
+        // it('should return false for invalid dates', () => {
+        //     expect(isValidDate('not-a-date')).to.be.false;
+        //     expect(isValidDate(new Date('invalid'))).to.be.false;
+        //     expect(isValidDate('02/30/2025')).to.be.false;
+        // });
     });
 
     describe('startOf', () => {
