@@ -38,7 +38,7 @@ jobs:
         with:
           name: Mocha Tests
           path: results/test-results.xml
-          reporter: mocha-junit
+          reporter: mocha-json
 
   build:
     runs-on: ubuntu-latest
