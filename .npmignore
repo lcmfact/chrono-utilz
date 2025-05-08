@@ -4,3 +4,4 @@
 .idea
 .github
 *.config.js
+package-lock.json
