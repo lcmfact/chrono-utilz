@@ -39,7 +39,7 @@ jobs:
         if: always()
         with:
           name: Mocha Tests
-          path: results/test-results.xml
+          path: report/json/result.json
           reporter: mocha-json
 
   build:
