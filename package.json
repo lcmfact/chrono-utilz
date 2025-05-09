@@ -27,13 +27,13 @@
   ],
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
-    "test": "mocha -r ts-node/register 'tests/**/*.test.ts' --reporter mocha-json-output-reporter --reporter-options output=report/json/result.json",
-    "test:ci": "npm run test",
+    "test": "mocha -r ts-node/register 'tests/**/*.test.ts'",
+    "test:ci": "mocha -r ts-node/register 'tests/**/*.test.ts' --reporter mocha-json-output-reporter --reporter-options output=report/json/result.json",
     "coverage": "nyc --reporter=lcov npm test",
     "lint": "eslint 'src/**/*.ts'",
     "typecheck": "tsc --noEmit",
     "prepare": "npm run build",
-    "prepublishOnly": "npm run lint && npm run typecheck && npm run test && npm run build"
+    "prepublishOnly": "npm run lint && npm run typecheck && npm run test:ci && npm run build"
   },
   "mochaJunitReporterReporterOptions": {
     "mochaFile": "results/test-results.xml"
